@@ -1,0 +1,33 @@
+Part 1: Two Roads to the Same Curve
+
+題目重點：
+A 方法使用三次 Bezier 公式直接算 C(t)；B 方法每次用 t=0.5 的中點建構法把曲線切成兩段，遞迴切到指定深度後，用子曲線端點連成折線近似原曲線。
+
+Part 1.2 convergence results:
+depth, max_gap_px, ratio_to_previous_depth
+0, 315.000000, N/A
+1, 78.658425, 4.005
+2, 19.910148, 3.951
+3, 5.002964, 3.980
+4, 1.252831, 3.993
+5, 0.313385, 3.998
+6, 0.078363, 3.999
+7, 0.019592, 4.000
+8, 0.004898, 4.000
+9, 0.001224, 4.001
+10, 0.000306, 4.000
+11, 0.000077, 4.000
+12, 0.000019, 4.000
+
+First depth with max gap below 0.5 px: 5
+
+Error rule:
+When the subdivision depth increases by one, each segment is roughly halved, so the maximum chord error usually decreases by about 4 times. The deeper depths follow this rule more closely; shallow depths can deviate because the polyline is still too coarse.
+
+One advantage of midpoint construction:
+It can subdivide adaptively: flatter parts can stop early, while more curved parts can keep splitting. The formula method asks us to choose the number of t samples in advance.
+
+Joins:
+A corner is a corner because the two direction lines around the join point are not on the same straight line.
+If the two direction points are collinear with the join point but the two direction-line lengths are unequal, the join still looks smooth because the tangent direction is continuous.
+Equal length is not required for visual smoothness; it mainly gives a more uniform parameter speed through the join.

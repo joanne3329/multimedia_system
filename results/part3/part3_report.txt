@@ -1,0 +1,36 @@
+Part 3: Landing on the Pixel Grid
+
+Part 3.I - area coverage:
+The five-pointed star was rotated by 5 degrees so that no edge is exactly horizontal or vertical.
+For each k, the path and canvas were scaled by k and filled using the Part 2 scanline algorithm.
+Each k-by-k block was then averaged into one output pixel. No built-in anti-aliasing or smoothing function was used.
+
+Part 3.II - measurement:
+Selected pixel row: y = 216
+Shallow edge endpoints: [188.2838837059387, 210.13184044746708] to [624.1051149006041, 248.26125750091106]
+At k=1, the profile contains an abrupt binary step with values of only 0 or 1.
+At k=8, intermediate coverage values appear, producing a smoother transition along the edge.
+Canvas size: 800 x 600 pixels
+
+Render times:
+k=1: 0.021782 seconds
+k=2: 0.096671 seconds
+k=4: 0.187131 seconds
+k=8: 0.605729 seconds
+
+Measured growth when k doubles:
+k=1 to k=2: 4.438 times
+k=2 to k=4: 1.936 times
+k=4 to k=8: 3.237 times
+The enlarged image contains k^2 times as many sample positions. Therefore, doubling k produces four times as many high-resolution pixels.
+The measured wall-clock time does not necessarily increase by exactly four times because NumPy processes row slices and block averaging using vector operations.
+
+Part 3.III - where the grid loses:
+The wheel contains 48 wedge subpaths, with gaps as wide as the wedges.
+(a) At k=1, the center shows aliasing, including false and unstable radial patterns rather than only jagged edges.
+(b) Moving toward the center, the wedges and gaps become narrower, so their spatial frequency increases.
+Once the spatial frequency exceeds the Nyquist limit of the final pixel grid, the Sampling Theorem says that the detail cannot be represented or recovered.
+Increasing k cleans the outer edges, but the center approaches uniform gray instead of recovering the individual wedges.
+(c) A low-pass anti-aliasing filter is relevant here.
+Averaging every k-by-k block already applies a box low-pass filter before downsampling.
+It suppresses misleading high-frequency aliases and produces average area coverage, but it cannot recover details that the final pixel grid cannot represent.

@@ -1,0 +1,18 @@
+Part 2: Inside and Outside
+
+Sign convention:
+In image coordinates, y increases downward. A downward edge adds +1 and an upward edge adds -1.
+The scanline is evaluated at each pixel center. A span is filled whenever the running winding number is non-zero.
+
+Part 2.2 - five-pointed star:
+Winding number at the center: -2
+The center is filled because its winding number is non-zero.
+This differs from filling alternate spans with the even-odd rule.
+
+Part 2.3 - two circle subpaths:
+Center winding number when both circles have the same direction: -2
+Center winding number when the inner circle is reversed: 0
+When both circles have the same direction, their winding contributions add, so the center is filled.
+When the inner circle is reversed, its contribution cancels the outer circle, so the center becomes a hole.
+No point is moved. Only the visiting order of the inner-circle points is reversed.
+Therefore, a font must store the inner and outer contours of the letter O in opposite directions so that the non-zero winding rule leaves the center unfilled.
